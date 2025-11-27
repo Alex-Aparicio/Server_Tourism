@@ -1,10 +1,10 @@
 FROM alpine/java:21-jdk
 
+WORKDIR /app
 
-WORKDIR /graphql
+# RUTA CORREGIDA: Apunta a la carpeta 'demo'
+COPY demo/target/eureka-0.0.1-SNAPSHOT.jar app.jar
 
-COPY TouristVision_Graphql/TouristVision/TouristVision-main/TouristVision/target/demo-0.0.1-SNAPSHOT.jar app.jar
-
-EXPOSE 8081
+EXPOSE 8761
 
 ENTRYPOINT ["java", "-jar","app.jar"]
