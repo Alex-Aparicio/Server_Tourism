@@ -1,10 +1,16 @@
-FROM alpine/java:21-jdk
+# Etapa 1: build con Maven
+FROM maven:3.9.6-eclipse-temurin-21 AS builder
+WORKDIR /app
+COPY . .
+RUN mvn clean package -DskipTests
+
+# Etapa 2: runtime con JDK ligero
+FROM eclipse-temurin:21-jdk
 
 WORKDIR /app
 
-# RUTA CORREGIDA: Apunta a la carpeta 'demo'
-COPY demo/target/eureka-0.0.1-SNAPSHOT.jar app.jar
+COPY --from=builder /app/demo/target/eureka-0.0.1-SNAPSHOT.jar app.jar
 
 EXPOSE 8761
 
-ENTRYPOINT ["java", "-jar","app.jar"]
+ENTRYPOINT ["java","-jar","app.jar"]
